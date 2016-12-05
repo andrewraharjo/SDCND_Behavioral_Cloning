@@ -1,7 +1,6 @@
 # Self-Driving Car Engineer Nanodegree
 # Deep Learning - Transfer Learning
-## Project: Behavioral Cloning
-## Deep Learning with Keras - Run the simulator to drive the car itself
+## Project: Deep Learning with Keras - Run the simulator to drive the car itself
 
 ### Overview
 We’ve created a simulator for you based on the Unity engine that uses real game physics to create a close approximation to real driving.
