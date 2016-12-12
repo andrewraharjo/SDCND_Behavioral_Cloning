@@ -89,6 +89,14 @@ The way I approached this by resizing the image to the specific needs. I tried t
 
 I reduced the size of the image by **25%** and used the red channel of YUV Image. It is more efficient in training terms of time and space. The resized image is saved as **features** and synced the data of steering angels as **labels**. I splitted the data into **train** and **validation**, and saved them as **camera.pickle** file
 
+Preprocessing:
+- 1.  Resize the image from 320x160 to 80x18.
+- 2.  Convert the 80x18 image from RGB to YUV.
+- 3.  Select the Red channel only from YUV for preprocessing.
+- 4.  Flatten the last 18 Y-axis from the bottom so the new resized image is now 80x18 YUV Red Ch.
+
+I have total 19221 items each contained three images from different angles: center, left, and right. So, there are total 19221 x 3 = 57663 images I reshaped and used for training.
+
 ## Training
 
 | Layer (type) | Output Shape | Param # | Connected to |
@@ -100,16 +108,25 @@ I reduced the size of the image by **25%** and used the red channel of YUV Image
 | activation_3 (Activation)| (None, 12, 74, 4)| 0 | convolution2d_3[0][0] |
 | convolution2d_4 (Convolution2D)|(None, 10, 72, 2)|74| activation_3[0][0] |
 | activation_4 (Activation)| (None, 10, 72, 2)| 0| convolution2d_4[0][0] |
-maxpooling2d_1 (MaxPooling2D)|(None, 5, 36, 2)|0|activation_4[0][0]               
-dropout_1 (Dropout)|(None, 5, 36, 2)|0|maxpooling2d_1[0][0]             
-flatten_1 (Flatten)|(None, 360)|0|dropout_1[0][0]                  
-dense_1 (Dense)|(None, 16)|5776|flatten_1[0][0]                  
-activation_5 (Activation)|(None, 16)|0|dense_1[0][0]                    
-dense_2 (Dense)|(None, 16)| 272|activation_5[0][0]               
-activation_6 (Activation)|(None, 16)|0|dense_2[0][0]                    
-dense_3 (Dense)|(None, 16)| 272|activation_6[0][0]               
-activation_7 (Activation)|(None, 16)|0|dense_3[0][0]                    
-dropout_2 (Dropout)|(None, 16)|0|activation_7[0][0]               
-dense_4 (Dense)|(None, 1)|17|dropout_2[0][0] 
+| maxpooling2d_1 (MaxPooling2D)|(None, 5, 36, 2)|0|activation_4[0][0]               
+| dropout_1 (Dropout)|(None, 5, 36, 2)|0|maxpooling2d_1[0][0]             
+| flatten_1 (Flatten)|(None, 360)|0|dropout_1[0][0]                  
+| dense_1 (Dense)|(None, 16)|5776|flatten_1[0][0]                  
+| activation_5 (Activation)|(None, 16)|0|dense_1[0][0]                    
+| dense_2 (Dense)|(None, 16)| 272|activation_5[0][0]               
+| activation_6 (Activation)|(None, 16)|0|dense_2[0][0]                    
+| dense_3 (Dense)|(None, 16)| 272|activation_6[0][0]               
+| activation_7 (Activation)|(None, 16)|0|dense_3[0][0]                    
+| dropout_2 (Dropout)|(None, 16)|0|activation_7[0][0]               
+| dense_4 (Dense)|(None, 1)|17|dropout_2[0][0] 
 
 Total params: 8023
+
+In the CNN architecture, I use Keras builtin support for the Adam optimizer similar on the lecture for Traffic Sign Classifier. The Adam optimizer, as explained in project 2, is Kingma and Ba's modified version of the Stochastic Gradient Descent that allows the use of larger step sizes without fine tuning.  In general, the Adam optimizer uses cross entropy calculations to minimize loss (average distance to the target label in the solution space) and use gradient descent, an iterative optimization technique and algorithm to achieve this goal. Even though using the Adam optimizer should allow us to use larger step sizes (learning rates)/ This made it so that the model never seem to converge, so it never over-fit; however, in subsequent tests, the model performed exceptionally well in steering the car in the simulator and making sure that the car remaining in the center of the lane. 
+
+### Summary
+The red channel of the image contains the better information for identifying the road and lanes than green and blue channels. As a result, the size of the image was 18 x 80 x 1.
+
+In my model, I used 4 ConvNet with 1 max pooling layer, and 3 more dense layers after flatten the matrix. For each convolutional layer, I decreased the channel size by half. When the size of the channel became 2 in the fourth convolutional layer, I applied max pooling with dropout with 25%. After flatten the matrix, the size of features became 360. I used dense layers with 16 features 4 times. Each epoch took about 100 seconds and I used 10 epoches to train the data. As a result, the car drove by itself without popping onto the edges or out of the edges.
+
+The interesting thing I noticed was even though the model allowed the car to drive itself, the accuracy was only about 58%. So the accuracy did not have to be high for car to drive autonomously. I believe that to increase the accuracy, I would need more data set and more epoches.
