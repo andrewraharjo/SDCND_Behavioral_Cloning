@@ -82,9 +82,9 @@ There are some common techniques you should consider using to prevent overfittin
     Adding dropout layers to your network.
     Splitting your dataset into a training set and a validation set.
 
-### Architecture and Training Docs
+## Architecture and Training Docs
 
-## Model Design
+### Model Design
 The way I approached this by resizing the image to the specific needs. I tried to eliminate the unnecessary data and focus on the road. 
 
 I reduced the size of the image by **25%** and used the red channel of YUV Image. It is more efficient in training terms of time and space. The resized image is saved as **features** and synced the data of steering angels as **labels**. I splitted the data into **train** and **validation**, and saved them as **camera.pickle** file
