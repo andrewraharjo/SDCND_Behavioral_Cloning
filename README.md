@@ -95,13 +95,21 @@ I reduced the size of the image by **25%** and used the red channel of YUV Image
 | :--- | :--- | ---: | :--- |
 | convolution2d_1 (Convolution2D) | (None, 16, 78, 16) | 160 | convolution2d_input_1[0][0]  |
 | activation_1 (Activation) | (None, 16, 78, 16)| 0 | convolution2d_1[0][0] |
-| convolution2d_1 (Convolution2D) | (None, 14, 76, 8)| 1160 | activation_1[0][0]  |
-| activation_2 (Activation) | (None, 14, 76, 8) | 0 | convolution2d_1[0][0] |
-| convolution2d_2 (Convolution2D) |(None, 5, 9, 5) | 4505 | convolution2d_2[0][0] |
-| elu_2 (ELU) |(None, 5, 9, 5) | 0 | convolution2d_2[0][0] |
-| convolution2d_3 (Convolution2D) |(None, 3, 5, 5) | 6005 | elu_2[0][0] |
-| elu_3 (ELU) |(None, 3, 5, 5) | 0 | convolution2d_3[0][0] |
-| convolution2d_4 (Convolution2D) |(None, 2, 3, 3) | 2883 | elu_3[0][0] |
-| elu_4 (ELU) |(None, 2, 3, 3) | 0 | convolution2d_4[0][0] |
-| convolution2d_5 (Convolution2D) |(None, 1, 2, 3) | 1731 | elu_4[0][0] |
+| convolution2d_2 (Convolution2D) | (None, 14, 76, 8)| 1160 | activation_1[0][0]  |
+| activation_2 (Activation) | (None, 14, 76, 8) | 0 | convolution2d_2[0][0] |
+| activation_3 (Activation)| (None, 12, 74, 4)| 0 | convolution2d_3[0][0] |
+| convolution2d_4 (Convolution2D)|(None, 10, 72, 2)|74| activation_3[0][0] |
+| activation_4 (Activation)| (None, 10, 72, 2)| 0| convolution2d_4[0][0] |
+maxpooling2d_1 (MaxPooling2D)|(None, 5, 36, 2)|0|activation_4[0][0]               
+dropout_1 (Dropout)|(None, 5, 36, 2)|0|maxpooling2d_1[0][0]             
+flatten_1 (Flatten)|(None, 360)|0|dropout_1[0][0]                  
+dense_1 (Dense)|(None, 16)|5776|flatten_1[0][0]                  
+activation_5 (Activation)|(None, 16)|0|dense_1[0][0]                    
+dense_2 (Dense)|(None, 16)| 272|activation_5[0][0]               
+activation_6 (Activation)|(None, 16)|0|dense_2[0][0]                    
+dense_3 (Dense)|(None, 16)| 272|activation_6[0][0]               
+activation_7 (Activation)|(None, 16)|0|dense_3[0][0]                    
+dropout_2 (Dropout)|(None, 16)|0|activation_7[0][0]               
+dense_4 (Dense)|(None, 1)|17|dropout_2[0][0] 
 
+Total params: 8023
