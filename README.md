@@ -82,4 +82,26 @@ There are some common techniques you should consider using to prevent overfittin
     Adding dropout layers to your network.
     Splitting your dataset into a training set and a validation set.
 
+### Architecture and Training Docs
+
+## Model Design
+The way I approached this by resizing the image to the specific needs. I tried to eliminate the unnecessary data and focus on the road. 
+
+I reduced the size of the image by **25%** and used the red channel of YUV Image. It is more efficient in training terms of time and space. The resized image is saved as **features** and synced the data of steering angels as **labels**. I splitted the data into **train** and **validation**, and saved them as **camera.pickle** file
+
+## Training
+
+| Layer (type) | Output Shape | Param # | Connected to |
+| :--- | :--- | ---: | :--- |
+| convolution2d_1 (Convolution2D) | (None, 16, 78, 16) | 160 | convolution2d_input_1[0][0]  |
+| activation_1 (Activation) | (None, 16, 78, 16)| 0 | convolution2d_1[0][0] |
+| convolution2d_1 (Convolution2D) | (None, 14, 76, 8)| 1160 | activation_1[0][0]  |
+| activation_2 (Activation) | (None, 14, 76, 8) | 0 | convolution2d_1[0][0] |
+| convolution2d_2 (Convolution2D) |(None, 5, 9, 5) | 4505 | convolution2d_2[0][0] |
+| elu_2 (ELU) |(None, 5, 9, 5) | 0 | convolution2d_2[0][0] |
+| convolution2d_3 (Convolution2D) |(None, 3, 5, 5) | 6005 | elu_2[0][0] |
+| elu_3 (ELU) |(None, 3, 5, 5) | 0 | convolution2d_3[0][0] |
+| convolution2d_4 (Convolution2D) |(None, 2, 3, 3) | 2883 | elu_3[0][0] |
+| elu_4 (ELU) |(None, 2, 3, 3) | 0 | convolution2d_4[0][0] |
+| convolution2d_5 (Convolution2D) |(None, 1, 2, 3) | 1731 | elu_4[0][0] |
 
