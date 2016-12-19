@@ -97,6 +97,10 @@ Preprocessing:
 
 I have total 19221 items each contained three images from different angles: center, left, and right. So, there are total 19221 x 3 = 57663 images I reshaped and used for training.
 
+I looked into NVIDIA's CNN - Paper: https://arxiv.org/pdf/1604.07316v1.pdf. Before finalizing on this architecture, we experimented with a model from the Keras lab, and Comma.ai's model from: https://github.com/commaai/research. The problem with both of these models is that they have too many model parameters and the hidden layers weights are much too large to be scalable. I chose the NVIDIA based model weights are a lot smaller; and therefore, much more scalable and performs faster. We pretty much followed the CNN network architecture from NVIDIA as outlined in their paper. Our CNN consists of 8 layers, including an additional maxpool layer to even further reduce the number of parameters. The layers includes 4 convolutional layers, 1 max pooling layer, and 3 dense layers.
+
+![NVIDIA Architecture](./NVIDIA_CNN.png)
+
 ## Training
 
 | Layer (type) | Output Shape | Param # | Connected to |
